@@ -1,10 +1,11 @@
-
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { AppStage } from './types';
 import { useScaler } from './hooks/useScaler';
 import FloatingBackground from './components/FloatingBackground';
-import StageEnvelope from './components/StageEnvelope';
-import StageSuccess from './components/StageSuccess';
+import EnvelopeScreen from './pages/EnvelopeScreen';
+import LetterScreen from './pages/LetterScreen';
+import CertificateScreen from './pages/CertificateScreen';
+import { audioManager } from './utils/audio-manager';
 
 const App: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -13,36 +14,57 @@ const App: React.FC = () => {
 
   useScaler(containerRef, stageRef, false);
 
+  // Unlock audio on first user interaction
+  useEffect(() => {
+    const unlock = () => {
+      audioManager.unlock();
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('touchstart', unlock);
+    };
+
+    window.addEventListener('pointerdown', unlock, { passive: true });
+    window.addEventListener('touchstart', unlock, { passive: true });
+
+    return () => {
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('touchstart', unlock);
+    };
+  }, []);
+
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className="w-full h-full bg-black overflow-hidden relative"
     >
-      {/* 
-        MOVED OUTSIDE: Dynamic Romantic Background 
-        Now acts as a global background layer independent of game scaling
-      */}
+      {/* Background */}
       <div className="absolute inset-0 z-0">
-         <FloatingBackground stage={stage} />
+        <FloatingBackground stage={stage} />
       </div>
 
-      {/* Scaled Game Stage (1920x1080 Logic) */}
-      <div 
-        ref={stageRef} 
-        className="absolute top-0 left-0 overflow-hidden shadow-2xl transition-all duration-1000 ease-in-out z-10"
+      {/* Scaled Game Stage (1920x1080) */}
+      <div
+        ref={stageRef}
+        className="absolute top-0 left-0 overflow-hidden shadow-2xl z-10"
         style={{ width: '1920px', height: '1080px', transformOrigin: '0 0', opacity: 0 }}
       >
-        {/* Main Content Area */}
         <div className="absolute inset-0 z-20">
+
+          {/* Screen 1: Envelope */}
           {stage === AppStage.ENVELOPE && (
-            <StageEnvelope onForgive={() => setStage(AppStage.CELEBRATION)} />
+            <EnvelopeScreen onOpen={() => setStage(AppStage.LETTER)} />
           )}
 
-          {stage === AppStage.CELEBRATION && (
-            <StageSuccess />
+          {/* Screen 2: Letter */}
+          {stage === AppStage.LETTER && (
+            <LetterScreen onForgive={() => setStage(AppStage.CERTIFICATE)} />
           )}
+
+          {/* Screen 3: Certificate */}
+          {stage === AppStage.CERTIFICATE && (
+            <CertificateScreen />
+          )}
+
         </div>
-        
       </div>
     </div>
   );

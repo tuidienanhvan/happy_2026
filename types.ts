@@ -1,7 +1,7 @@
 export enum AppStage {
   ENVELOPE = 'ENVELOPE',
-  APOLOGY = 'APOLOGY',
-  CELEBRATION = 'CELEBRATION'
+  LETTER = 'LETTER',
+  CERTIFICATE = 'CERTIFICATE'
 }
 
 export interface FloatingItem {

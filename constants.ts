@@ -10,12 +10,3 @@ export const APOLOGY_CONTENT = {
   btnYes: "Tha lỗi cho anh 🥺",
   btnNo: "Không thèm 😤"
 };
-
-export const TET_CONTENT = {
-  greeting: "Chúc Mừng Năm Mới",
-  subheader: "Xuân mới tràn đầy yêu thương",
-  lixiMessage: "Lì xì đặc biệt dành riêng cho bé!",
-  lixiAmount: "Vô giá ❤️",
-  body: "Năm mới chúc em luôn xinh đẹp, rạng rỡ và hạnh phúc. Cảm ơn em đã luôn ở bên cạnh anh, yêu em nhiều lắm!",
-  lixiNote: "(Món quà này chứa đựng tình yêu siêu to khổng lồ)"
-};

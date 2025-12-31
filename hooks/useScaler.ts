@@ -73,7 +73,7 @@ export const useScaler = (
     // Initial scale
     updateScale();
 
-    // Show stage
+    // Show stage immediately (App.tsx handles delay now)
     if (stageRef.current) {
       stageRef.current.style.opacity = '1';
     }
