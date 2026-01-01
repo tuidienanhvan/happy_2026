@@ -1,42 +1,45 @@
 import React from 'react';
 
 interface FlipCardProps {
-    isFlipped: boolean;
-    front: React.ReactNode;
-    back: React.ReactNode;
+  isFlipped: boolean;
+  front: React.ReactNode;
+  back: React.ReactNode;
 }
 
 // Card size optimized for 1920x1080 game stage
-// Mobile (portrait): taller card fits better
-// Desktop (landscape): wider card
+// ALWAYS landscape (horizontal) on all devices
 export const CARD_SIZE = {
-    width: 'max-w-[850px]', // Slightly smaller than full width
-    mobileWidth: 'w-[90%]', // Fill most of screen on mobile
-    aspectRatio: 'aspect-[3/4]', // Tall for portrait/mobile
-    mdAspectRatio: 'md:aspect-[4/3]', // Wide for landscape/desktop
+  width: 'max-w-[950px]', // Wider card
+  mobileWidth: 'w-[95%]', // Fill most of screen on mobile
+  aspectRatio: 'aspect-[16/10]', // Always horizontal rectangle
+  mdAspectRatio: 'md:aspect-[16/10]', // Same for desktop
 };
 
 const FlipCard: React.FC<FlipCardProps> = ({ isFlipped, front, back }) => {
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
         .flip-card-container {
           perspective: 2500px;
           perspective-origin: center center;
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
         }
         
         .flip-card-inner {
           position: relative;
           width: 100%;
           height: 100%;
-          /* Smoother, longer flip animation */
-          transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: transform 1.1s cubic-bezier(0.4, 0.0, 0.2, 1);
           transform-style: preserve-3d;
+          -webkit-transform-style: preserve-3d;
           will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
         
         .flip-card-inner.flipped {
-          transform: rotateY(180deg);
+          transform: rotateY(180deg) translateZ(0);
         }
         
         .flip-card-front,
@@ -46,13 +49,14 @@ const FlipCard: React.FC<FlipCardProps> = ({ isFlipped, front, back }) => {
           height: 100%;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
-          /* Add subtle shadow for depth */
           border-radius: 4px;
           overflow: hidden;
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
         }
         
         .flip-card-back {
-          transform: rotateY(180deg);
+          transform: rotateY(180deg) translateZ(0);
         }
         
         /* Add shadow that moves with flip */
@@ -72,21 +76,21 @@ const FlipCard: React.FC<FlipCardProps> = ({ isFlipped, front, back }) => {
         }
       `}</style>
 
-            <div className={`${CARD_SIZE.mobileWidth} ${CARD_SIZE.width} ${CARD_SIZE.aspectRatio} ${CARD_SIZE.mdAspectRatio} flip-card-container`}>
-                <div className={`flip-card-inner ${isFlipped ? 'flipped' : ''}`}>
-                    {/* Front Side - Letter */}
-                    <div className="flip-card-front">
-                        {front}
-                    </div>
+      <div className={`${CARD_SIZE.mobileWidth} ${CARD_SIZE.width} ${CARD_SIZE.aspectRatio} ${CARD_SIZE.mdAspectRatio} flip-card-container`}>
+        <div className={`flip-card-inner ${isFlipped ? 'flipped' : ''}`}>
+          {/* Front Side - Letter */}
+          <div className="flip-card-front">
+            {front}
+          </div>
 
-                    {/* Back Side - Certificate */}
-                    <div className="flip-card-back">
-                        {back}
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+          {/* Back Side - Certificate */}
+          <div className="flip-card-back">
+            {back}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default FlipCard;

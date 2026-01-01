@@ -78,9 +78,9 @@ const Envelope: React.FC<Props> = ({ step, onOpen, onLetterClick }) => {
       {/* Sheen Animation */}
       <style>{`
         @keyframes sheen-sweep {
-          0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+          0% { transform: translateX(-100%) translateY(-100%) rotate(45deg) translateZ(0); opacity: 0; }
           20% { opacity: 0.6; }
-          40% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+          40% { transform: translateX(100%) translateY(100%) rotate(45deg) translateZ(0); opacity: 0; }
           100% { opacity: 0; }
         }
       `}</style>

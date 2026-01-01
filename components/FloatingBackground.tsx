@@ -107,8 +107,8 @@ const FloatingBackground: React.FC<Props> = () => {
         }
 
         @keyframes sway {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
+            0%, 100% { transform: rotate(-3deg) translateZ(0); }
+            50% { transform: rotate(3deg) translateZ(0); }
         }
 
         @keyframes fall-down-gpu {

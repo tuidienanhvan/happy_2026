@@ -89,13 +89,14 @@ const WaxSeal: React.FC<Props> = ({ onClick, isVisible, style }) => {
     <>
       <style>{`
           @keyframes wax-drop {
-            0% { transform: scale(1); }
-            20% { transform: scale(1.15); } /* Pop up slightly */
-            100% { transform: translateY(400px) rotate(25deg); opacity: 0; } /* Drop down */
+            0% { transform: scale(1) translateZ(0); }
+            20% { transform: scale(1.15) translateZ(0); } /* Pop up slightly */
+            100% { transform: translateY(400px) rotate(25deg) translateZ(0); opacity: 0; } /* Drop down */
           }
           .animate-wax-drop {
             animation: wax-drop 0.8s cubic-bezier(0.5, 0, 0.75, 0) forwards;
-            pointer-events: none; /* Prevent clicks while falling */
+            pointer-events: none;
+            will-change: transform, opacity;
           }
         `}</style>
 

@@ -162,7 +162,7 @@ const App: React.FC = () => {
               <FlipCard
                 isFlipped={isFlipped}
                 front={<LetterScreen onForgive={handleForgive} />}
-                back={<CertificateScreen />}
+                back={<CertificateScreen isVisible={isFlipped} />}
               />
 
               {/* Firework Button - OUTSIDE the card, only visible on Certificate */}

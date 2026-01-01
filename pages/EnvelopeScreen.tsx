@@ -48,37 +48,39 @@ const EnvelopeScreen: React.FC<Props> = ({ onOpen }) => {
 
             <style>{`
         @keyframes glow-spin-slow {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
+          from { transform: translate(-50%, -50%) rotate(0deg) translateZ(0); }
+          to { transform: translate(-50%, -50%) rotate(360deg) translateZ(0); }
         }
         @keyframes glow-spin-reverse {
-          from { transform: translate(-50%, -50%) rotate(360deg); }
-          to { transform: translate(-50%, -50%) rotate(0deg); }
+          from { transform: translate(-50%, -50%) rotate(360deg) translateZ(0); }
+          to { transform: translate(-50%, -50%) rotate(0deg) translateZ(0); }
         }
         @keyframes glow-pulse-deep {
-          0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-          50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+          0%, 100% { transform: translate(-50%, -50%) scale(1) translateZ(0); opacity: 0.5; }
+          50% { transform: translate(-50%, -50%) scale(1.1) translateZ(0); opacity: 0.8; }
         }
         
         /* Step 4: Envelope drops down */
         @keyframes envelope-drop {
-          0% { transform: scale(1) rotateX(10deg) translateY(0); opacity: 1; }
-          100% { transform: scale(0.8) rotateX(20deg) translateY(300px); opacity: 0; }
+          0% { transform: scale(1) rotateX(10deg) translateY(0) translateZ(0); opacity: 1; }
+          100% { transform: scale(0.8) rotateX(20deg) translateY(300px) translateZ(0); opacity: 0; }
         }
         
         /* Step 4: Letter flies up and scales */
         @keyframes letter-fly-up {
-          0% { transform: translateY(0) scale(1); opacity: 1; }
-          60% { transform: translateY(-400px) scale(1.5); opacity: 1; }
-          100% { transform: translateY(-350px) scale(2); opacity: 0; }
+          0% { transform: translateY(0) scale(1) translateZ(0); opacity: 1; }
+          60% { transform: translateY(-400px) scale(1.5) translateZ(0); opacity: 1; }
+          100% { transform: translateY(-350px) scale(2) translateZ(0); opacity: 0; }
         }
         
         .envelope-dropping {
           animation: envelope-drop 1s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+          will-change: transform, opacity;
         }
         
         .letter-flying {
           animation: letter-fly-up 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          will-change: transform, opacity;
         }
       `}</style>
 

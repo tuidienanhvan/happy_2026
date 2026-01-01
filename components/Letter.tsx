@@ -45,16 +45,17 @@ const Letter: React.FC<Props> = ({ isUp, isFlying = false, onClick }) => {
       <style>{`
         @keyframes letter-to-center {
           0% { 
-            transform: translateY(-80px) scale(1); 
+            transform: translateY(-80px) scale(1) translateZ(0); 
           }
           100% { 
             /* End position - centered, scaled to match FlipCard */
-            transform: translateY(-200px) scale(1.8); 
+            transform: translateY(-200px) scale(1.8) translateZ(0); 
           }
         }
         .letter-flying {
           animation: letter-to-center 0.6s ease-out forwards !important;
           z-index: 100 !important;
+          will-change: transform;
         }
       `}</style>
 
