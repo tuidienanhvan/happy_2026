@@ -36,6 +36,27 @@ const LetterScreen: React.FC<Props> = ({ onForgive }) => {
               20% { opacity: 1; }
               100% { transform: scale(1) translateY(0); opacity: 1; }
             }
+            
+            /* Mobile portrait responsive - only affects screens < 768px AND portrait */
+            @media screen and (max-width: 767px) and (orientation: portrait) {
+              .letter-content { padding: 1rem !important; }
+              .letter-header h2 { font-size: 2rem !important; }
+              .letter-body p { font-size: 1rem !important; line-height: 1.4 !important; }
+              .letter-body { gap: 0.5rem !important; overflow-y: auto !important; }
+              .letter-sign { font-size: 1.5rem !important; }
+              .letter-btn-text { font-size: 1.25rem !important; }
+              .letter-btn-icon { width: 20px !important; height: 20px !important; }
+            }
+            
+            /* Mobile landscape - reduce height-based elements */
+            @media screen and (max-width: 900px) and (orientation: landscape) {
+              .letter-content { padding: 0.5rem 1rem !important; }
+              .letter-header { margin-bottom: 0.25rem !important; margin-top: 0.25rem !important; }
+              .letter-body { gap: 0.25rem !important; overflow-y: auto !important; }
+              .letter-body p { font-size: 0.875rem !important; line-height: 1.3 !important; }
+              .letter-sign { font-size: 1.25rem !important; margin-top: 0.25rem !important; }
+              .letter-actions { margin-top: 0.25rem !important; min-height: 50px !important; }
+            }
           `}</style>
 
             {/* Paper Texture */}
@@ -56,29 +77,29 @@ const LetterScreen: React.FC<Props> = ({ onForgive }) => {
             </div>
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col h-full py-8 px-4 md:px-12 md:py-10">
+            <div className="letter-content relative z-10 flex flex-col h-full py-8 px-4 md:px-12 md:py-10">
 
                 {/* HEADER */}
-                <div className="w-full text-left mb-6 md:mb-10 mt-4 md:mt-6 pl-2">
+                <div className="letter-header w-full text-left mb-6 md:mb-10 mt-4 md:mt-6 pl-2">
                     <h2 className="font-script text-5xl md:text-7xl text-[#9f1239] font-bold drop-shadow-sm rotate-[-2deg] origin-bottom-left">
                         {APOLOGY_CONTENT.greeting}
                     </h2>
                 </div>
 
                 {/* BODY */}
-                <div className="flex-1 flex flex-col justify-center space-y-3 md:space-y-4 text-left pl-2 md:pl-4 pr-2">
+                <div className="letter-body flex-1 flex flex-col justify-center space-y-3 md:space-y-4 text-left pl-2 md:pl-4 pr-2">
                     {APOLOGY_CONTENT.paragraphs.map((para, idx) => (
                         <p key={idx} className="font-hand text-2xl md:text-3xl font-bold text-[#5d2e0c] leading-relaxed">
                             {para}
                         </p>
                     ))}
-                    <p className="font-script text-4xl text-right text-[#be123c] mt-4 pr-8">
+                    <p className="letter-sign font-script text-4xl text-right text-[#be123c] mt-4 pr-8">
                         {APOLOGY_CONTENT.sign}
                     </p>
                 </div>
 
                 {/* ACTION BUTTONS */}
-                <div className="mt-4 pt-2 w-full flex items-center justify-center gap-8 md:gap-16 relative min-h-[70px]">
+                <div className="letter-actions mt-4 pt-2 w-full flex items-center justify-center gap-8 md:gap-16 relative min-h-[70px]">
 
                     {/* YES BUTTON */}
                     <button
@@ -90,8 +111,8 @@ const LetterScreen: React.FC<Props> = ({ onForgive }) => {
                             className="relative border-2 border-[#e11d48] px-8 py-3 flex items-center gap-3 bg-[#fff0f3]/90 backdrop-blur-[1px] shadow-sm transition-all"
                             style={{ borderRadius: '255px 15px 225px 15px / 15px 225px 15px 255px' }}
                         >
-                            <Heart className="fill-[#e11d48] text-[#e11d48] animate-pulse" size={32} />
-                            <span className="font-hand text-3xl md:text-4xl font-bold text-[#be123c]">{APOLOGY_CONTENT.btnYes}</span>
+                            <Heart className="letter-btn-icon fill-[#e11d48] text-[#e11d48] animate-pulse" size={32} />
+                            <span className="letter-btn-text font-hand text-3xl md:text-4xl font-bold text-[#be123c]">{APOLOGY_CONTENT.btnYes}</span>
                         </div>
                     </button>
 
