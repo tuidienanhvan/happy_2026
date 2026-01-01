@@ -6,11 +6,14 @@ interface FlipCardProps {
     back: React.ReactNode;
 }
 
-// Shared card size for Letter and Certificate - consistent aspect ratio
+// Card size optimized for 1920x1080 game stage
+// Mobile (portrait): taller card fits better
+// Desktop (landscape): wider card
 export const CARD_SIZE = {
-    width: 'max-w-[1000px]',
-    aspectRatio: 'aspect-[3/4]',
-    mdAspectRatio: 'md:aspect-[4/3]',
+    width: 'max-w-[850px]', // Slightly smaller than full width
+    mobileWidth: 'w-[90%]', // Fill most of screen on mobile
+    aspectRatio: 'aspect-[3/4]', // Tall for portrait/mobile
+    mdAspectRatio: 'md:aspect-[4/3]', // Wide for landscape/desktop
 };
 
 const FlipCard: React.FC<FlipCardProps> = ({ isFlipped, front, back }) => {
@@ -69,7 +72,7 @@ const FlipCard: React.FC<FlipCardProps> = ({ isFlipped, front, back }) => {
         }
       `}</style>
 
-            <div className={`w-full ${CARD_SIZE.width} ${CARD_SIZE.aspectRatio} ${CARD_SIZE.mdAspectRatio} flip-card-container`}>
+            <div className={`${CARD_SIZE.mobileWidth} ${CARD_SIZE.width} ${CARD_SIZE.aspectRatio} ${CARD_SIZE.mdAspectRatio} flip-card-container`}>
                 <div className={`flip-card-inner ${isFlipped ? 'flipped' : ''}`}>
                     {/* Front Side - Letter */}
                     <div className="flip-card-front">

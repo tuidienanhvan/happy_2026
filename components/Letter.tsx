@@ -41,15 +41,15 @@ export const HandwritingLines = ({ className }: { className?: string }) => (
 const Letter: React.FC<Props> = ({ isUp, isFlying = false, onClick }) => {
   return (
     <>
-      {/* Flying animation CSS - Letter arc to center, stays visible */}
+      {/* Flying animation CSS - Letter slides to center */}
       <style>{`
         @keyframes letter-to-center {
           0% { 
             transform: translateY(-80px) scale(1); 
           }
           100% { 
-            /* End at center, scaled up to match card */
-            transform: translateY(-280px) scale(2.2); 
+            /* End position - centered, scaled to match FlipCard */
+            transform: translateY(-200px) scale(1.8); 
           }
         }
         .letter-flying {
