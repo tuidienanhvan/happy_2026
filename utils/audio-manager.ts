@@ -16,9 +16,56 @@ class AudioManager {
     private unlocked = false;
     private musicAudio: HTMLAudioElement | null = null;
     private isMusicPlaying = false;
+    private musicPreloaded = false;
+    private musicBlobUrl: string | null = null;
 
     constructor() {
         // AudioContext will be created on first user interaction
+        // Preload music immediately using fetch to bypass IDM
+        this.preloadMusic();
+    }
+
+    // Preload music file using fetch + Blob URL to bypass IDM interception
+    async preloadMusic(): Promise<void> {
+        if (this.musicPreloaded) return;
+        this.musicPreloaded = true; // Set early to prevent duplicate calls
+
+        try {
+            console.log('[AudioManager] Fetching music via blob...');
+
+            // Use fetch to load audio as blob - IDM cannot intercept this
+            const response = await fetch('/song.mp3', {
+                method: 'GET',
+                cache: 'force-cache',
+                // These headers help avoid IDM detection
+                headers: {
+                    'Accept': 'application/octet-stream',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch: ${response.status}`);
+            }
+
+            const blob = await response.blob();
+            this.musicBlobUrl = URL.createObjectURL(blob);
+
+            // Create audio element with blob URL
+            this.musicAudio = new Audio(this.musicBlobUrl);
+            this.musicAudio.loop = true;
+            this.musicAudio.volume = 0.5;
+            this.musicAudio.preload = 'auto';
+
+            console.log('[AudioManager] Music preloaded via blob URL');
+        } catch (err) {
+            console.warn('[AudioManager] Blob preload failed, falling back to direct URL:', err);
+            // Fallback to direct URL if fetch fails
+            this.musicAudio = new Audio('/song.mp3');
+            this.musicAudio.loop = true;
+            this.musicAudio.volume = 0.5;
+            this.musicAudio.preload = 'auto';
+        }
     }
 
     // Unlock audio on first user interaction (required for iOS)
@@ -262,23 +309,34 @@ class AudioManager {
     }
 
     // Play background music from file
-    playMusic(volume: number = 0.5): void {
+    async playMusic(volume: number = 0.5): Promise<void> {
+        console.log('[AudioManager] playMusic called, isMusicPlaying:', this.isMusicPlaying);
+
+        // Prevent double-play
+        if (this.isMusicPlaying) return;
+        this.isMusicPlaying = true;
+
         try {
+            // Ensure audio is preloaded (wait for blob to load)
             if (!this.musicAudio) {
-                this.musicAudio = new Audio('/song.mp3');
-                this.musicAudio.loop = true;
-                this.musicAudio.volume = volume;
-                this.musicAudio.preload = 'auto';
+                await this.preloadMusic();
             }
 
-            if (!this.isMusicPlaying) {
-                this.musicAudio.play().catch(err => {
-                    console.warn('[AudioManager] Failed to play music:', err);
-                });
-                this.isMusicPlaying = true;
+            if (!this.musicAudio) {
+                console.warn('[AudioManager] Music audio not available');
+                this.isMusicPlaying = false;
+                return;
             }
+
+            // Update volume
+            this.musicAudio.volume = volume;
+
+            console.log('[AudioManager] Starting music playback...');
+            await this.musicAudio.play();
+            console.log('[AudioManager] Music playing successfully');
         } catch (err) {
-            console.warn('[AudioManager] Error playing music:', err);
+            console.warn('[AudioManager] Failed to play music:', err);
+            this.isMusicPlaying = false;
         }
     }
 

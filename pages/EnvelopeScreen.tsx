@@ -8,8 +8,8 @@ interface Props {
 
 const EnvelopeScreen: React.FC<Props> = ({ onOpen }) => {
     const [showGlow, setShowGlow] = useState(false);
-    // 0: Sealed, 1: Seal Drops, 2: Flap Opens, 3: Letter Slides Out
-    const [step, setStep] = useState<0 | 1 | 2 | 3>(0);
+    // 0: Sealed, 1: Seal Drops, 2: Flap Opens, 3: Letter Slides Out, 4: Letter Flying Up + Envelope Drops
+    const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(0);
 
     // Delay glow effects to prevent FOUC
     useEffect(() => {
@@ -31,11 +31,15 @@ const EnvelopeScreen: React.FC<Props> = ({ onOpen }) => {
         }, 1800);
     };
 
-    // Click Letter → Go to LetterScreen
+    // Click Letter → Start flying animation, then go to LetterScreen
     const handleLetterClick = () => {
         if (step === 3) {
-            playSound('click');
-            onOpen();
+            playSound('whoosh');
+            setStep(4); // Letter flies to center
+            // When animation ends, show LetterScreen immediately
+            setTimeout(() => {
+                onOpen();
+            }, 600); // Match animation duration exactly
         }
     };
 
@@ -55,11 +59,32 @@ const EnvelopeScreen: React.FC<Props> = ({ onOpen }) => {
           0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
           50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
         }
+        
+        /* Step 4: Envelope drops down */
+        @keyframes envelope-drop {
+          0% { transform: scale(1) rotateX(10deg) translateY(0); opacity: 1; }
+          100% { transform: scale(0.8) rotateX(20deg) translateY(300px); opacity: 0; }
+        }
+        
+        /* Step 4: Letter flies up and scales */
+        @keyframes letter-fly-up {
+          0% { transform: translateY(0) scale(1); opacity: 1; }
+          60% { transform: translateY(-400px) scale(1.5); opacity: 1; }
+          100% { transform: translateY(-350px) scale(2); opacity: 0; }
+        }
+        
+        .envelope-dropping {
+          animation: envelope-drop 1s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+        }
+        
+        .letter-flying {
+          animation: letter-fly-up 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
       `}</style>
 
             {/* --- ENVELOPE WRAPPER --- */}
             <div
-                className="transition-all duration-[1500px] ease-in-out relative z-10"
+                className={`transition-all duration-[1500ms] ease-in-out relative z-10 ${step === 4 ? 'envelope-dropping' : ''}`}
                 style={{
                     transformStyle: 'preserve-3d',
                     transform: 'scale(1) rotateX(10deg)',
@@ -97,7 +122,7 @@ const EnvelopeScreen: React.FC<Props> = ({ onOpen }) => {
                     </div>
                 )}
 
-                {/* The Envelope Component with animation steps */}
+                {/* The Envelope Component with animation steps - pass step 4 info */}
                 <Envelope step={step} onOpen={handleSealClick} onLetterClick={handleLetterClick} />
             </div>
 

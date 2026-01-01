@@ -10,31 +10,31 @@ const LanternSVG = React.memo(({ style, color }: { style: React.CSSProperties; c
   <div style={style} className="absolute flex flex-col items-center opacity-90 will-change-transform">
     {/* String */}
     <div className="w-[1px] h-10 bg-yellow-200/50 mb-[-2px]"></div>
-    
+
     {/* Lantern Body */}
     <div className="relative">
-        {/* Glow - Reduced radius for performance */}
-        <div className="absolute inset-0 bg-yellow-500 rounded-full blur-md opacity-40 animate-pulse"></div>
-        <svg viewBox="0 0 100 120" width="100%" height="100%" className="drop-shadow-md">
+      {/* Glow - Reduced radius for performance */}
+      <div className="absolute inset-0 bg-yellow-500 rounded-full blur-md opacity-40 animate-pulse"></div>
+      <svg viewBox="0 0 100 120" width="100%" height="100%" className="drop-shadow-md">
         <defs>
-            <radialGradient id={`lanternGrad-${color}`} cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#ffeb3b" /> 
+          <radialGradient id={`lanternGrad-${color}`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#ffeb3b" />
             <stop offset="60%" stopColor={color} />
             <stop offset="100%" stopColor="#7f1d1d" />
-            </radialGradient>
+          </radialGradient>
         </defs>
         <path d="M30,10 L70,10 L75,15 L25,15 Z" fill="#4a0404" />
         <path d="M25,15 Q10,40 25,95 L75,95 Q90,40 75,15 Z" fill={`url(#lanternGrad-${color})`} />
         <path d="M50,15 L50,95" stroke="#4a0404" strokeWidth="0.5" opacity="0.5" />
         <path d="M30,95 L70,95 L65,100 L35,100 Z" fill="#4a0404" />
-        </svg>
+      </svg>
     </div>
-    
+
     {/* Tassel - Simplified DOM */}
     <div className="flex flex-col items-center mt-[-2px]">
-        <div className="w-[2px] h-2 bg-red-900"></div>
-        <div className="w-1 h-1 bg-yellow-500 rounded-full"></div>
-        <div className="w-[1px] h-8 bg-red-600/80"></div>
+      <div className="w-[2px] h-2 bg-red-900"></div>
+      <div className="w-1 h-1 bg-yellow-500 rounded-full"></div>
+      <div className="w-[1px] h-8 bg-red-600/80"></div>
     </div>
   </div>
 ));
@@ -58,10 +58,10 @@ const BlossomSVG = React.memo(({ style }: { style: React.CSSProperties }) => (
 ));
 
 const FloatingBackground: React.FC<Props> = () => {
-  
+
   const lanterns = useMemo(() => Array.from({ length: 15 }).map((_, i) => ({
     id: i,
-    left: Math.random() * 100, 
+    left: Math.random() * 100,
     size: Math.random() * 40 + 40, // Reduced max size slightly
     duration: Math.random() * 15 + 20 + 's',
     delay: -Math.random() * 20 + 's', // Negative delay to start mid-animation
@@ -74,7 +74,7 @@ const FloatingBackground: React.FC<Props> = () => {
     left: Math.random() * 100,
     size: Math.random() * 12 + 8,
     duration: Math.random() * 10 + 10 + 's',
-    delay: -Math.random() * 15 + 's', 
+    delay: -Math.random() * 15 + 's',
     rotation: Math.random() * 360
   })), []);
 
@@ -127,12 +127,12 @@ const FloatingBackground: React.FC<Props> = () => {
       `}</style>
 
       {/* 1. Base Gradient */}
-      <div 
+      <div
         className="absolute inset-0 bg-gradient-to-br from-[#2a0a12] via-[#3f070f] to-[#1e1b4b]"
         style={{
-            backgroundSize: '200% 200%',
-            animation: 'subtle-shift 20s ease infinite',
-            transform: 'translate3d(0,0,0)' // Force layer
+          backgroundSize: '200% 200%',
+          animation: 'subtle-shift 20s ease infinite',
+          transform: 'translate3d(0,0,0)' // Force layer
         }}
       ></div>
 
@@ -143,31 +143,31 @@ const FloatingBackground: React.FC<Props> = () => {
       {/* 3. Fireflies */}
       {fireflies.map((f) => (
         <div
-            key={`firefly-${f.id}`}
-            className="absolute rounded-full bg-yellow-200 blur-[1px] will-change-transform"
-            style={{
-                left: `${f.left}%`,
-                top: `${f.top}%`,
-                width: f.size,
-                height: f.size,
-                animation: `firefly-move-gpu ${f.floatDuration} ease-in-out infinite`,
-                animationDelay: f.delay
-            }}
+          key={`firefly-${f.id}`}
+          className="absolute rounded-full bg-yellow-200 blur-[1px] will-change-transform"
+          style={{
+            left: `${f.left}%`,
+            top: `${f.top}%`,
+            width: f.size,
+            height: f.size,
+            animation: `firefly-move-gpu ${f.floatDuration} ease-in-out infinite`,
+            animationDelay: f.delay
+          }}
         />
       ))}
 
       {/* 4. Falling Blossoms */}
       {blossoms.map((b) => (
-        <div 
+        <div
           key={`blossom-${b.id}`}
           className="absolute will-change-transform"
           style={{
-             left: `${b.left}%`,
-             top: 0, // Start from top
-             animation: `fall-down-gpu ${b.duration} linear infinite`,
-             animationDelay: b.delay,
-             width: b.size,
-             height: b.size,
+            left: `${b.left}%`,
+            top: 0, // Start from top
+            animation: `fall-down-gpu ${b.duration} linear infinite`,
+            animationDelay: b.delay,
+            width: b.size,
+            height: b.size,
           }}
         >
           <BlossomSVG style={{ width: '100%', height: '100%' }} />
@@ -177,32 +177,32 @@ const FloatingBackground: React.FC<Props> = () => {
       {/* 5. Floating Lanterns */}
       {lanterns.map((l) => (
         <div
-            key={`lantern-${l.id}`}
-            className="absolute z-10 will-change-transform"
-            style={{
-                left: `${l.left}%`,
-                top: 0, // Reference point
-                width: l.size,
-                height: l.size * 1.4,
-                animation: `float-up-gpu ${l.duration} linear infinite`,
-                animationDelay: l.delay,
-            }}
+          key={`lantern-${l.id}`}
+          className="absolute z-10 will-change-transform"
+          style={{
+            left: `${l.left}%`,
+            top: 0, // Reference point
+            width: l.size,
+            height: l.size * 1.4,
+            animation: `float-up-gpu ${l.duration} linear infinite`,
+            animationDelay: l.delay,
+          }}
         >
-            <div style={{ animation: `sway ${l.swayDuration} ease-in-out infinite alternate` }}>
-                <LanternSVG 
-                    style={{ width: '100%', height: '100%' }} 
-                    color={l.color} 
-                />
-            </div>
+          <div style={{ animation: `sway ${l.swayDuration} ease-in-out infinite alternate` }}>
+            <LanternSVG
+              style={{ width: '100%', height: '100%' }}
+              color={l.color}
+            />
+          </div>
         </div>
       ))}
-      
+
       {/* 6. Vignette (Static) */}
       <div className="absolute inset-0 bg-[radial-gradient(transparent_40%,rgba(0,0,0,0.6)_100%)] z-20 pointer-events-none"></div>
-      
+
       {/* 7. Noise (Static) */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-20 mix-blend-overlay"
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}>
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}>
       </div>
 
     </div>
