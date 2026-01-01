@@ -1,9 +1,9 @@
 import React from 'react';
 import { audioManager, playSound } from '../utils/audio-manager';
 
-// 🦀 ROYAL GOLDEN CRAB - Realistic/Heraldic Style
-// Now exported and accepts SVGProps for positioning (x, y)
-export const CrabIcon = ({ size = 24, className = "", ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) => (
+// 🌸 CHRYSANTHEMUM FLOWER - Traditional Golden Style
+// Exported and accepts SVGProps for positioning (x, y)
+export const ChrysanthemumIcon = ({ size = 24, className = "", ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -14,69 +14,99 @@ export const CrabIcon = ({ size = 24, className = "", ...props }: React.SVGProps
     {...props}
   >
     <defs>
-      {/* Body Gold Gradient - Metallic Look */}
-      <linearGradient id="goldBody" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#FEF3C7" />   {/* Light */}
-        <stop offset="40%" stopColor="#F59E0B" />   {/* Gold */}
-        <stop offset="100%" stopColor="#B45309" />  {/* Bronze */}
+      {/* Petal Gold Gradient - Metallic Look */}
+      <linearGradient id="goldPetal" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#FEF3C7" />
+        <stop offset="40%" stopColor="#F59E0B" />
+        <stop offset="100%" stopColor="#B45309" />
       </linearGradient>
 
+      {/* Center gradient - deeper gold */}
+      <radialGradient id="goldCenter" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#FCD34D" />
+        <stop offset="60%" stopColor="#D97706" />
+        <stop offset="100%" stopColor="#92400E" />
+      </radialGradient>
+
       {/* Stroke for definition */}
-      <linearGradient id="goldStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+      <linearGradient id="petalStroke" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stopColor="#FFFBEB" />
         <stop offset="100%" stopColor="#92400E" />
       </linearGradient>
 
-      {/* Sharp Shadow for Embossed effect */}
-      <filter id="embossShadow" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="1" stdDeviation="0.5" floodColor="rgba(0,0,0,0.5)" />
+      {/* Shadow filter */}
+      <filter id="flowerShadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="rgba(0,0,0,0.4)" />
       </filter>
     </defs>
 
-    <g filter="url(#embossShadow)">
-      {/* --- LEGS (Sharp and Angled - Realistic) --- */}
-      {/* Left Legs */}
-      <path d="M30,65 Q15,60 10,75" stroke="url(#goldBody)" strokeWidth="4" strokeLinecap="round" fill="none" />
-      <path d="M28,80 Q12,85 15,95" stroke="url(#goldBody)" strokeWidth="4" strokeLinecap="round" fill="none" />
-      <path d="M35,90 Q25,100 30,105" stroke="url(#goldBody)" strokeWidth="4" strokeLinecap="round" fill="none" />
+    <g filter="url(#flowerShadow)">
+      {/* --- OUTER PETALS (16 petals) --- */}
+      {[...Array(16)].map((_, i) => (
+        <ellipse
+          key={`outer-${i}`}
+          cx="60"
+          cy="25"
+          rx="8"
+          ry="22"
+          fill="url(#goldPetal)"
+          stroke="url(#petalStroke)"
+          strokeWidth="0.5"
+          transform={`rotate(${i * 22.5} 60 60)`}
+        />
+      ))}
 
-      {/* Right Legs */}
-      <path d="M90,65 Q105,60 110,75" stroke="url(#goldBody)" strokeWidth="4" strokeLinecap="round" fill="none" />
-      <path d="M92,80 Q108,85 105,95" stroke="url(#goldBody)" strokeWidth="4" strokeLinecap="round" fill="none" />
-      <path d="M85,90 Q95,100 90,105" stroke="url(#goldBody)" strokeWidth="4" strokeLinecap="round" fill="none" />
+      {/* --- MIDDLE PETALS (12 petals, shorter) --- */}
+      {[...Array(12)].map((_, i) => (
+        <ellipse
+          key={`mid-${i}`}
+          cx="60"
+          cy="35"
+          rx="6"
+          ry="16"
+          fill="url(#goldPetal)"
+          stroke="url(#petalStroke)"
+          strokeWidth="0.5"
+          transform={`rotate(${i * 30 + 15} 60 60)`}
+        />
+      ))}
 
-      {/* --- CLAWS (Strong & Distinct) --- */}
-      {/* Left Arm Segment */}
-      <path d="M35,55 L25,45" stroke="url(#goldBody)" strokeWidth="6" strokeLinecap="round" />
-      {/* Left Pincer */}
-      <path d="M25,45 C10,35 10,15 30,25 C25,30 25,35 25,45 Z" fill="url(#goldBody)" stroke="url(#goldStroke)" strokeWidth="1" />
-      <path d="M25,45 C35,35 40,20 30,25" fill="none" stroke="url(#goldStroke)" strokeWidth="1" /> {/* Claw separation */}
+      {/* --- INNER PETALS (8 petals, smallest) --- */}
+      {[...Array(8)].map((_, i) => (
+        <ellipse
+          key={`inner-${i}`}
+          cx="60"
+          cy="45"
+          rx="5"
+          ry="10"
+          fill="url(#goldPetal)"
+          stroke="url(#petalStroke)"
+          strokeWidth="0.5"
+          transform={`rotate(${i * 45 + 22.5} 60 60)`}
+        />
+      ))}
 
-      {/* Right Arm Segment */}
-      <path d="M85,55 L95,45" stroke="url(#goldBody)" strokeWidth="6" strokeLinecap="round" />
-      {/* Right Pincer */}
-      <path d="M95,45 C110,35 110,15 90,25 C95,30 95,35 95,45 Z" fill="url(#goldBody)" stroke="url(#goldStroke)" strokeWidth="1" />
-      <path d="M95,45 C85,35 80,20 90,25" fill="none" stroke="url(#goldStroke)" strokeWidth="1" />
-
-      {/* --- MAIN SHELL (Carapace - Hexagonal/Trapezoid shape) --- */}
-      <path d="M40,50 
-                 L80,50 
-                 Q95,60 90,80 
-                 Q60,95 30,80 
-                 Q25,60 40,50 Z"
-        fill="url(#goldBody)" stroke="url(#goldStroke)" strokeWidth="1.5" />
-
-      {/* Shell Detail lines */}
-      <path d="M60,50 L60,85" stroke="#B45309" strokeWidth="1" strokeOpacity="0.5" />
-      <path d="M40,50 Q50,65 60,70" stroke="#B45309" strokeWidth="1" strokeOpacity="0.3" fill="none" />
-      <path d="M80,50 Q70,65 60,70" stroke="#B45309" strokeWidth="1" strokeOpacity="0.3" fill="none" />
-
-      {/* Eyes (Small stalks) */}
-      <circle cx="50" cy="48" r="3" fill="url(#goldBody)" stroke="#78350F" strokeWidth="0.5" />
-      <circle cx="70" cy="48" r="3" fill="url(#goldBody)" stroke="#78350F" strokeWidth="0.5" />
+      {/* --- FLOWER CENTER --- */}
+      <circle cx="60" cy="60" r="12" fill="url(#goldCenter)" stroke="#92400E" strokeWidth="1" />
+      
+      {/* Center details - small dots */}
+      {[...Array(6)].map((_, i) => (
+        <circle
+          key={`dot-${i}`}
+          cx={60 + 6 * Math.cos((i * 60 * Math.PI) / 180)}
+          cy={60 + 6 * Math.sin((i * 60 * Math.PI) / 180)}
+          r="1.5"
+          fill="#78350F"
+          opacity="0.6"
+        />
+      ))}
+      <circle cx="60" cy="60" r="3" fill="#78350F" opacity="0.5" />
     </g>
   </svg>
 );
+
+// Keep CrabIcon as alias for backward compatibility
+export const CrabIcon = ChrysanthemumIcon;
 
 interface Props {
   onClick: () => void;

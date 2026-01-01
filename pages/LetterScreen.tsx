@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
 import { CornerFlourish, LoveStamp } from '../components/Letter';
-import { APOLOGY_CONTENT } from '../constants';
+import { LETTER_FRONT } from '../constants';
 import { playSound } from '../utils/audio-manager';
 
 interface Props {
@@ -13,7 +12,7 @@ const LetterScreen: React.FC<Props> = ({ onForgive }) => {
 
     const moveNoButton = (e?: React.MouseEvent | React.TouchEvent) => {
         if (e) e.stopPropagation();
-        playSound('sparkle'); // Playful sparkle when NO button evades
+        playSound('sparkle');
         const rangeX = 100;
         const rangeY = 60;
         const x = (Math.random() - 0.5) * rangeX;
@@ -27,7 +26,6 @@ const LetterScreen: React.FC<Props> = ({ onForgive }) => {
     };
 
     return (
-        // Card content fills the FlipCard container
         <div className="w-full h-full bg-[#fffbf0] shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col relative">
 
             <style>{`
@@ -61,19 +59,19 @@ const LetterScreen: React.FC<Props> = ({ onForgive }) => {
                 {/* HEADER */}
                 <div className="w-full text-left mb-6 md:mb-10 mt-4 md:mt-6 pl-2">
                     <h2 className="font-script text-5xl md:text-7xl text-[#9f1239] font-bold drop-shadow-sm rotate-[-2deg] origin-bottom-left">
-                        {APOLOGY_CONTENT.greeting}
+                        {LETTER_FRONT.greeting}
                     </h2>
                 </div>
 
                 {/* BODY */}
                 <div className="flex-1 flex flex-col justify-center space-y-3 md:space-y-4 text-left pl-2 md:pl-4 pr-2">
-                    {APOLOGY_CONTENT.paragraphs.map((para, idx) => (
+                    {LETTER_FRONT.paragraphs.map((para, idx) => (
                         <p key={idx} className="font-hand text-2xl md:text-3xl font-bold text-[#5d2e0c] leading-relaxed">
                             {para}
                         </p>
                     ))}
                     <p className="font-script text-4xl text-right text-[#be123c] mt-4 pr-8">
-                        {APOLOGY_CONTENT.sign}
+                        {LETTER_FRONT.sign}
                     </p>
                 </div>
 
@@ -90,8 +88,7 @@ const LetterScreen: React.FC<Props> = ({ onForgive }) => {
                             className="relative border-2 border-[#e11d48] px-8 py-3 flex items-center gap-3 bg-[#fff0f3]/90 backdrop-blur-[1px] shadow-sm transition-all"
                             style={{ borderRadius: '255px 15px 225px 15px / 15px 225px 15px 255px' }}
                         >
-                            <Heart className="fill-[#e11d48] text-[#e11d48] animate-pulse" size={32} />
-                            <span className="font-hand text-3xl md:text-4xl font-bold text-[#be123c]">{APOLOGY_CONTENT.btnYes}</span>
+                            <span className="font-hand text-3xl md:text-4xl font-bold text-[#be123c]">Xem lời chúc Tết 🧧</span>
                         </div>
                     </button>
 
@@ -108,7 +105,7 @@ const LetterScreen: React.FC<Props> = ({ onForgive }) => {
                             className="absolute group px-4 py-2 cursor-pointer"
                         >
                             <span className="font-hand text-2xl md:text-4xl font-bold text-[#78350f] opacity-70 group-hover:opacity-100 transition-all underline decoration-wavy decoration-[#78350f]/50 underline-offset-4 whitespace-nowrap">
-                                {APOLOGY_CONTENT.btnNo}
+                                Để sau 😊
                             </span>
                         </button>
                     </div>
